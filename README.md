@@ -1,173 +1,173 @@
-GitHub Stats Checker
-A Next.js app to fetch and display GitHub user statistics, including contribution graphs, repository details, languages, and other metrics. Perfect for developers who want to showcase their GitHub activity visually.
-Features
+# GitHub Stats Checker
 
-View GitHub profile information
-Interactive contribution graph for the last 3 years
-Repository list with key stats (stars, forks, issues)
-Language breakdown of repositories
-Dynamic statistics grid (followers, following, public repos, etc.)
-Dark/light theme support
-Search GitHub users by username
+A beautiful **Next.js** application to fetch and display GitHub user statistics, including interactive contribution graphs, repository details, language analytics, and more. Perfect for developers who want to showcase their GitHub activity visually.
 
-Demo
-You can see a live demo here: Your Demo Link
-Getting Started
-Clone the repository
-bashgit clone https://github.com/yourusername/github-stats-checker.git
-cd github-stats-checker
-Install dependencies
-bashnpm install
-# or
-yarn install
-# or
-pnpm install
-Start the development server
-bashnpm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-Open http://localhost:3000 in your browser to view the app.
-Usage
+## ✨ Features
 
-Enter a GitHub username in the search bar
-Explore the user's profile, contribution graph, repositories, languages, and stats
+- 🔍 **Search GitHub Users** - Instantly find any GitHub user by username
+- 📊 **Profile Overview** - View comprehensive user profile information
+- 📈 **Contribution Graph** - Interactive contribution calendar for the last 3 years
+- 🗂️ **Repository List** - Browse repositories with stars, forks, and issue counts
+- 🎨 **Language Analytics** - Visual breakdown of programming languages used
+- 📋 **Statistics Dashboard** - Quick stats including followers, following, and public repos
+- 🌙 **Dark/Light Theme** - Toggle between dark and light modes
+- ✨ **Smooth Animations** - Enhanced UX with GSAP and Framer Motion
+- 📱 **Responsive Design** - Works seamlessly on all devices
 
-Environment Variables
-Create a .env.local file at the root of your project:
-envGITHUB_TOKEN=your_github_personal_access_token
+## 🚀 Getting Started
 
-Note: GITHUB_TOKEN is optional but recommended to avoid rate limiting by GitHub's API.
+### Prerequisites
+- Node.js 18 or higher
+- npm, yarn, or pnpm
 
-Technologies Used
+### Installation
 
-Next.js – React framework for server-side rendering
-React – Frontend library
-Tailwind CSS – Styling
-Redux Toolkit – State management
-React GitHub Calendar – Contribution graph visualization
-Lucide Icons – Icons
-
-Learn More
-
-Next.js Documentation
-Tailwind CSS Documentation
-GitHub API Documentation
-
-Deploy on Vercel
-The easiest way to deploy this app is via Vercel:
-
-Push your project to GitHub
-Import the repository in Vercel
-Set the environment variable GITHUB_TOKEN in Vercel
-Deploy and enjoy your live GitHub Stats Checker!
-
-Check Next.js Deployment Docs for more details.
-Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests for new features and improvements.
-License
-This project is licensed under the MIT License.
-
-Made with ❤️ by Your Namegive readme.md copy paste7:48 PMHere's a clean, ready-to-copy README.md for your GitHub Stats Checker project:
-markdown# GitHub Stats Checker
-
-A **Next.js** app to fetch and display GitHub user statistics, including contribution graphs, repository details, languages, and other metrics. Perfect for developers who want to showcase their GitHub activity visually.
-
-## Features
-
-- View GitHub profile information
-- Interactive contribution graph for the last 3 years
-- Repository list with key stats (stars, forks, issues)
-- Language breakdown of repositories
-- Dynamic statistics grid (followers, following, public repos, etc.)
-- Dark/light theme support
-- Search GitHub users by username
-
-## Demo
-
-You can see a live demo here: [Your Demo Link](https://your-demo-link.com)
-
-## Getting Started
-
-### Clone the repository
+1. **Clone the repository**
 ```bash
 git clone https://github.com/yourusername/github-stats-checker.git
 cd github-stats-checker
 ```
 
-### Install dependencies
+2. **Install dependencies**
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
-### Start the development server
+3. **Start the development server**
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+4. **Open in browser**
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## Usage
+## 📖 Usage
 
-1. Enter a GitHub username in the search bar
-2. Explore the user's profile, contribution graph, repositories, languages, and stats
+1. Enter a GitHub username in the search bar on the home page
+2. Press Enter or click search
+3. Explore the user's complete GitHub profile including:
+   - Profile card with bio and avatar
+   - All public repositories with statistics
+   - Contribution activity graph
+   - Programming language distribution
+   - Account statistics
 
-## Environment Variables
+## 🔧 Environment Setup
 
-Create a `.env.local` file at the root of your project:
+Create a `.env.local` file in the project root:
 ```env
 GITHUB_TOKEN=your_github_personal_access_token
 ```
 
-> **Note:** `GITHUB_TOKEN` is optional but recommended to avoid rate limiting by GitHub's API.
+> **Tip:** While `GITHUB_TOKEN` is optional, it's highly recommended to avoid GitHub API rate limits (60 requests/hour without token vs 5000 with token).
 
-## Technologies Used
+## 📦 Tech Stack
 
-- **Next.js** – React framework for server-side rendering
-- **React** – Frontend library
-- **Tailwind CSS** – Styling
-- **Redux Toolkit** – State management
-- **React GitHub Calendar** – Contribution graph visualization
-- **Lucide Icons** – Icons
+| Technology | Purpose |
+|-----------|---------|
+| **Next.js 16** | React framework with server-side rendering |
+| **React 19** | Frontend library |
+| **Tailwind CSS 4** | Utility-first CSS styling |
+| **Material-UI (MUI)** | Component library |
+| **Redux** | State management for theme |
+| **Recharts** | Data visualization & charts |
+| **React GitHub Calendar** | Contribution graph |
+| **GSAP + Framer Motion** | Smooth animations |
+| **Lucide React** | Icon library |
 
-## Learn More
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [GitHub API Documentation](https://docs.github.com/en/rest)
+```
+your-github/
+├── app/                      # Next.js app directory
+│   ├── api/
+│   │   └── github/[username]/ # GitHub API endpoint
+│   ├── profile/              # Profile page route
+│   ├── page.js               # Home/search page
+│   ├── layout.js             # Root layout
+│   └── globals.css           # Global styles
+├── components/
+│   ├── common/
+│   │   └── SearchBar.js      # Username search input
+│   ├── profile/
+│   │   ├── ProfileCard.js    # User profile info
+│   │   ├── RepoList.js       # Repository list
+│   │   ├── ActivityGraph.js  # Contribution graph
+│   │   ├── LanguageStats.js  # Language visualization
+│   │   ├── ContributionGraph.js
+│   │   ├── StatsGrid.js      # Statistics grid
+│   │   └── DecryptedText.jsx # Animated text
+│   └── ui/
+│       ├── SkeletonLoader.js # Loading state
+│       └── sparkles.jsx      # Visual effects
+├── hooks/
+│   └── useGithubProfile.js   # Custom hook for GitHub API
+├── lib/
+│   └── utils.js              # Utility functions
+├── store/
+│   ├── store.js              # Redux store
+│   └── theme.slice.js        # Theme slice
+└── public/                    # Static assets
+```
 
-## Deploy on Vercel
+## 🛠️ Available Scripts
 
-The easiest way to deploy this app is via [Vercel](https://vercel.com):
+```bash
+# Development server (http://localhost:3000)
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run ESLint
+npm run lint
+```
+
+## 🚀 Deployment
+
+### Deploy on Vercel
+
+The easiest way to deploy is via [Vercel](https://vercel.com):
 
 1. Push your project to GitHub
-2. Import the repository in Vercel
-3. Set the environment variable `GITHUB_TOKEN` in Vercel
-4. Deploy and enjoy your live GitHub Stats Checker!
+2. Go to [vercel.com](https://vercel.com) and import the repository
+3. Add environment variable: `GITHUB_TOKEN=your_token`
+4. Click Deploy
 
-Check [Next.js Deployment Docs](https://nextjs.org/docs/deployment) for more details.
+For more details, see [Next.js Deployment Documentation](https://nextjs.org/docs/deployment).
 
-## Contributing
+## 📚 Learn More
 
-Contributions are welcome! Feel free to open issues or submit pull requests for new features and improvements.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Guide](https://tailwindcss.com/docs)
+- [GitHub API Docs](https://docs.github.com/en/rest)
+- [Redux Documentation](https://redux.js.org)
+- [Material-UI Components](https://mui.com)
 
-## License
+## 🤝 Contributing
 
-This project is licensed under the MIT License.
+Contributions are welcome! To contribute:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## ❤️ Acknowledgments
+
+- Built with [Next.js](https://nextjs.org)
+- Icons from [Lucide React](https://lucide.dev) and [MUI Icons](https://mui.com/material-icons)
+- Charts powered by [Recharts](https://recharts.org)
+- Animations by [GSAP](https://greensock.com/gsap)
 
 ---
 
-**Made with ❤️ by Aditya Singh
+**Made with ❤️ by Aditya Singh**
