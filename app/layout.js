@@ -8,8 +8,8 @@ import { toggleTheme } from "@/store/theme.slice.js";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { StepBack } from "lucide-react";
-
+import { Github, Heart  } from "lucide-react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 export default function RootLayout({ children }) {
   return (
     <Provider store={store}>
@@ -26,42 +26,46 @@ function LayoutContent({ children }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Apply theme to body
+  const isDark = theme === "dark";
+
+  // Apply theme to body only after mount
   useEffect(() => {
-    if (theme === "dark") {
+    if (!mounted) return;
+
+    if (isDark) {
       document.body.classList.add("bg-black", "text-white");
       document.body.classList.remove("bg-white", "text-black");
     } else {
       document.body.classList.add("bg-white", "text-black");
       document.body.classList.remove("bg-black", "text-white");
     }
-  }, [theme]);
+  }, [isDark, mounted]);
 
-  const skeletonBg =
-    theme === "dark" ? "bg-slate-800" : "bg-slate-300";
+  // Safe fallback for skeletons
+  const skeletonBg = mounted && isDark ? "bg-slate-800" : "bg-slate-300";
 
   return (
     <html lang="en">
+      <head>
+        <title>Your-Git</title>
+         {/* 🔹 New favicon */}
+      </head>
       <body className="min-h-screen transition-colors duration-500">
         <main className="relative min-h-screen overflow-hidden">
-          <Background theme={theme}>
+          <Background theme={mounted && isDark ? "dark" : "light"}>
             {/* 🔹 Top-left Back button / Skeleton */}
             <div className="fixed top-4 left-3 md:top-6 md:left-6 z-50">
               {!mounted ? (
-                <div
-                  className={`h-6 w-14 rounded-md animate-pulse ${skeletonBg}`}
-                />
+                <div className={`h-6 w-14 rounded-md animate-pulse ${skeletonBg}`} />
               ) : (
                 pathname !== "/" && (
                   <Link
                     href="/"
                     className={`font-bold text-lg md:text-xl transition-all duration-300 ${
-                      theme === "dark"
-                        ? "text-white hover:text-blue-400"
-                        : "text-black hover:text-blue-600"
+                      mounted && isDark ? "text-white hover:text-blue-400" : "text-black hover:text-blue-600"
                     }`}
                   >
-                    <StepBack/>
+                    <ArrowBackIcon />
                   </Link>
                 )
               )}
@@ -70,21 +74,14 @@ function LayoutContent({ children }) {
             {/* 🔹 Top-right Theme toggle / Skeleton */}
             <div className="fixed top-4 right-3 md:top-6 md:right-6 z-50">
               {!mounted ? (
-                <div
-                  className={`w-10 h-10 rounded-full animate-pulse ${skeletonBg}`}
-                />
+                <div className={`w-10 h-10 rounded-full animate-pulse ${skeletonBg}`} />
               ) : (
                 <button
                   onClick={() => dispatch(toggleTheme())}
                   className="text-[#8b949e] hover:text-[#58a6ff] transition-all duration-300 p-2 rounded-full hover:bg-[#161b22]"
                 >
-                  {theme === "dark" ? (
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                  {mounted && isDark ? (
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -93,12 +90,7 @@ function LayoutContent({ children }) {
                       />
                     </svg>
                   ) : (
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -117,6 +109,34 @@ function LayoutContent({ children }) {
             </div>
           </Background>
         </main>
+
+        {/* 🔹 Footer */}
+        {mounted && (
+          <footer className="mt-10">
+            <div className="text-center space-y-3 mb-6">
+              <p
+                className={`text-sm flex items-center justify-center gap-2 ${
+                  mounted && isDark ? "text-[#8b949e]" : "text-gray-600"
+                }`}
+              >
+                Made with{" "}
+                <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" /> by Aditya Singh
+              </p>
+
+              <a
+                href="https://github.com/adityasingh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
+                  mounted && isDark ? "text-[#8b949e] hover:text-[#58a6ff]" : "text-gray-700 hover:text-blue-600"
+                }`}
+              >
+                <Github className="w-4 h-4" />
+                View on GitHub
+              </a>
+            </div>
+          </footer>
+        )}
       </body>
     </html>
   );

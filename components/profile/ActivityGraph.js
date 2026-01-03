@@ -5,7 +5,6 @@ import {
   LineChart,
   Line,
   XAxis,
-  YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
@@ -21,7 +20,7 @@ export default function ActivityGraph({ data, username, loading = false }) {
 if (loading) {
   return (
     <div
-      className={`rounded-xl border p-6 animate-pulse ${
+      className={`min-w-xl rounded-xl border p-6 animate-pulse ${
         isDark ? "bg-black border-slate-700" : "bg-white border-gray-300"
       }`}
     >
@@ -95,22 +94,42 @@ if (loading) {
               stroke={isDark ? "#93c5fd" : "#2563eb"}
               tick={{ fontSize: 12 }}
             />
-
+{/* 
             <YAxis
               stroke={isDark ? "#93c5fd" : "#2563eb"}
               tick={{ fontSize: 12 }}
               allowDecimals={false}
-            />
+
+            /> */}
 
             <Tooltip
-              contentStyle={{
-                backgroundColor: isDark ? "#020617" : "#ffffff",
-                border: "1px solid #1e40af",
-                borderRadius: "6px",
-                color: isDark ? "#ffffff" : "#000000",
-              }}
-              labelStyle={{ color: "#38bdf8" }}
-            />
+  content={({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          style={{
+            backgroundColor: isDark ? "#020617" : "#ffffff",
+            border: `1px solid ${isDark ? "#2563eb" : "#1e40af"}`,
+            borderRadius: "6px",
+            padding: "8px",
+            color: isDark ? "#ffffff" : "#000000",
+            minWidth: "100px",
+          }}
+        >
+          {/* 🔹 Custom label name */}
+          <p style={{ color: "#38bdf8", fontWeight: 600 }}>
+             {label} {/* change "Day:" to whatever you want */}
+          </p>
+
+          {/* Value */}
+          
+        </div>
+      );
+    }
+    return null;
+  }}
+/>
+
 
             <Line
               type="monotone"

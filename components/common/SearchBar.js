@@ -2,8 +2,7 @@
 
 import { Search, Github, Heart, Sparkles } from "lucide-react";
 import { useState } from "react";
-import { useSelector } from "react-redux"; // import Redux selector
-import { RootState } from "@/store/store"; // import store type
+import { useSelector } from "react-redux"; // import Redux selector // import store type
 import DecryptedText from "../DecryptedText";
 
 export default function SearchBar({ onSearch }) {

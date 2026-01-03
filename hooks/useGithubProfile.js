@@ -15,7 +15,7 @@ export function useGithubProfile() {
 
     try {
       const res = await fetch(`/api/github/${username}`);
-
+        
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Failed to fetch profile");
