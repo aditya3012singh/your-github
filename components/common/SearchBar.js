@@ -113,7 +113,7 @@ export default function SearchBar({ onSearch }) {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-10 space-y-3">
+        {/* <div className="text-center mt-10 space-y-3">
           <p
             className={`text-sm flex items-center justify-center gap-2 ${
               isDark ? "text-[#8b949e]" : "text-gray-600"
@@ -135,7 +135,7 @@ export default function SearchBar({ onSearch }) {
             <Github className="w-4 h-4" />
             View on GitHub
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );
