@@ -61,7 +61,7 @@ export default function RepoList({ repos, loading }) {
   if (loading) {
     return (
       <div
-        className={`rounded-xl p-6 transition-colors duration-500 ${
+        className={` rounded-xl p-6 transition-colors duration-500 ${
           isDark ? "bg-black border border-slate-700" : "bg-white border-gray-300"
         }`}
       >
@@ -105,7 +105,7 @@ export default function RepoList({ repos, loading }) {
 
   return (
     <div
-      className={`rounded-xl p-6 transition-colors duration-500 ${
+      className={`rounded-xl border p-6 transition-colors duration-500 ${
         isDark ? "bg-black border border-slate-700 text-slate-400" : "bg-white border-gray-300 text-gray-900"
       }`}
     >

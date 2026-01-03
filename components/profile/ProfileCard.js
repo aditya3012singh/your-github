@@ -18,7 +18,7 @@ export default function ProfileCard({ profile, loading }) {
   if (loading) {
     return (
       <div
-        className={`rounded-xl p-6 flex flex-col items-center animate-pulse transition-colors duration-500 ${
+        className={` rounded-xl p-6 flex flex-col items-center animate-pulse transition-colors duration-500 ${
           isDark ? "bg-black border border-slate-700" : "bg-white border-gray-300"
         }`}
       >

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 function StatSkeleton({ isDark }) {
   return (
     <div
-      className={`rounded-xl p-4 animate-pulse transition-colors duration-500 ${
+      className={` rounded-xl p-4 animate-pulse transition-colors duration-500 ${
         isDark ? "bg-black border border-slate-700" : "bg-white border-gray-300"
       }`}
     >

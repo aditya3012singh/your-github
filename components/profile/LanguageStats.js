@@ -3,68 +3,56 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function LanguageStats({ data, loading }) {
-  // ✅ Get theme from Redux
+export default function LanguageStats({ data, loading, username }) {
   const theme = useSelector((state) => state.theme.theme);
   const isDark = theme === "dark";
 
-  // ✅ Prevent SSR hydration mismatch
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [animate, setAnimate] = useState(false);
+  const [hovered, setHovered] = useState(null);
+
+  useEffect(() => {
+    setMounted(true);
+    setTimeout(() => setAnimate(true), 150);
+  }, []);
+
   if (!mounted) return null;
 
-  /* 🔹 Loading Skeleton */
+  /* -------------------- SKELETON -------------------- */
   if (loading) {
     return (
       <div
-        className={`rounded-xl p-6 border animate-pulse transition-colors duration-500 ${
+        className={`rounded-xl p-6 border animate-pulse ${
           isDark ? "bg-black border-slate-700" : "bg-white border-gray-300"
         }`}
       >
-        <div
-          className={`h-5 w-44 rounded mb-4 ${
-            isDark ? "bg-slate-700" : "bg-gray-300"
-          }`}
-        />
-
-        {/* Progress bar skeleton */}
-        <div
-          className={`h-4 rounded-full mb-4 ${
-            isDark ? "bg-slate-700" : "bg-gray-300"
-          }`}
-        />
-
-        {/* List skeleton */}
+        <div className={`h-5 w-44 rounded mb-4 ${isDark ? "bg-slate-700" : "bg-gray-300"}`} />
+        <div className={`h-4 rounded-full mb-4 ${isDark ? "bg-slate-700" : "bg-gray-300"}`} />
         <div className="grid grid-cols-2 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  isDark ? "bg-slate-700" : "bg-gray-300"
-                }`}
-              />
-              <div
-                className={`h-4 w-20 rounded ${
-                  isDark ? "bg-slate-700" : "bg-gray-300"
-                }`}
-              />
-              <div
-                className={`ml-auto h-4 w-10 rounded ${
-                  isDark ? "bg-slate-700" : "bg-gray-300"
-                }`}
-              />
-            </div>
+            <div
+              key={i}
+              className={`h-4 rounded ${isDark ? "bg-slate-700" : "bg-gray-300"}`}
+            />
           ))}
         </div>
       </div>
     );
   }
 
-  /* 🔹 Empty safety */
-  if (!data || Object.keys(data).length === 0) return null;
+  /* -------------------- DATA NORMALIZATION -------------------- */
+  if (!data || typeof data !== "object") return null;
 
-  const total = Object.values(data).reduce((a, b) => a + b, 0);
+  const entries = Object.entries(data)
+    .filter(([, bytes]) => typeof bytes === "number" && bytes > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
 
+  if (entries.length === 0) return null;
+
+  const total = entries.reduce((sum, [, bytes]) => sum + bytes, 0);
+
+  /* -------------------- COLORS -------------------- */
   const getColor = (lang) => {
     const colors = {
       JavaScript: "#f1e05a",
@@ -87,9 +75,18 @@ export default function LanguageStats({ data, loading }) {
     return colors[lang] || "#8b949e";
   };
 
+  const openGitHubLang = (lang) => {
+    if (!username) return;
+    window.open(
+      `https://github.com/${username}?tab=repositories&language=${encodeURIComponent(lang)}`,
+      "_blank"
+    );
+  };
+
+  /* -------------------- UI -------------------- */
   return (
     <div
-      className={`rounded-xl p-6 border transition-colors duration-500 ${
+      className={` rounded-xl p-6 border transition-colors ${
         isDark ? "bg-black border-slate-700" : "bg-white border-gray-300"
       }`}
     >
@@ -101,38 +98,61 @@ export default function LanguageStats({ data, loading }) {
         Most Used Languages
       </h3>
 
-      {/* Progress bar */}
+      {/* 🔥 Animated Progress Bar */}
       <div className="h-4 rounded-full overflow-hidden flex mb-4">
-        {Object.entries(data).map(([lang, bytes]) => (
-          <div
-            key={lang}
-            style={{
-              width: `${((bytes / total) * 100).toFixed(1)}%`,
-              backgroundColor: getColor(lang),
-            }}
-          />
-        ))}
+        {entries.map(([lang, bytes]) => {
+          const percent = ((bytes / total) * 100).toFixed(1);
+          return (
+            <div
+              key={lang}
+              onMouseEnter={() => setHovered(lang)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                width: animate ? `${percent}%` : "0%",
+                backgroundColor: getColor(lang),
+                transition: "width 1s ease",
+              }}
+              className="relative"
+            >
+              {hovered === lang && (
+                <div
+                  className={`absolute -top-9 left-1/2 -translate-x-1/2 text-xs px-2 py-1 rounded shadow ${
+                    isDark ? "bg-slate-800 text-white" : "bg-black text-white"
+                  }`}
+                >
+                  {lang} · {percent}%
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      {/* Legend */}
+      {/* 📊 Legend */}
       <div className="grid grid-cols-2 gap-2">
-        {Object.entries(data).map(([lang, bytes]) => (
-          <div
-            key={lang}
-            className={`flex items-center gap-2 text-sm ${
-              isDark ? "text-white" : "text-gray-900"
-            }`}
-          >
+        {entries.map(([lang, bytes]) => {
+          const percent = ((bytes / total) * 100).toFixed(1);
+          return (
             <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: getColor(lang) }}
-            />
-            <span>{lang}</span>
-            <span className={`ml-auto ${isDark ? "text-slate-400" : "text-gray-500"}`}>
-              {((bytes / total) * 100).toFixed(1)}%
-            </span>
-          </div>
-        ))}
+              key={lang}
+              onClick={() => openGitHubLang(lang)}
+              onMouseEnter={() => setHovered(lang)}
+              onMouseLeave={() => setHovered(null)}
+              className={`flex items-center gap-2 text-sm cursor-pointer transition hover:opacity-100 ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
+            >
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: getColor(lang) }}
+              />
+              <span>{lang}</span>
+              <span className={`ml-auto ${isDark ? "text-slate-400" : "text-gray-500"}`}>
+                {percent}%
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

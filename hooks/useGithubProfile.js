@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export function useGithubProfile() {
   const [profile, setProfile] = useState(null);
@@ -7,7 +7,7 @@ export function useGithubProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const loadProfile = async (username) => {
+  const loadProfile = useCallback(async (username) => {
     if (!username) return;
 
     setLoading(true);
@@ -31,7 +31,7 @@ export function useGithubProfile() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   return { profile, repos, loading, error, loadProfile };
 }
