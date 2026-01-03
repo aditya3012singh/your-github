@@ -8,8 +8,9 @@ import { toggleTheme } from "@/store/theme.slice.js";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Github, Heart  } from "lucide-react";
+import { Github, Heart } from "lucide-react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 export default function RootLayout({ children }) {
   return (
     <Provider store={store}>
@@ -41,14 +42,13 @@ function LayoutContent({ children }) {
     }
   }, [isDark, mounted]);
 
-  // Safe fallback for skeletons
   const skeletonBg = mounted && isDark ? "bg-slate-800" : "bg-slate-300";
 
   return (
     <html lang="en">
       <head>
         <title>Your-Git</title>
-         {/* 🔹 New favicon */}
+        {/* 🔹 Add favicon here if you have */}
       </head>
       <body className="min-h-screen transition-colors duration-500">
         <main className="relative min-h-screen overflow-hidden">
@@ -110,8 +110,8 @@ function LayoutContent({ children }) {
           </Background>
         </main>
 
-        {/* 🔹 Footer */}
-        {mounted && (
+        {/* 🔹 Footer: show only if pathname is NOT "/" */}
+        {mounted && pathname !== "/" && (
           <footer className="mt-10">
             <div className="text-center space-y-3 mb-6">
               <p
