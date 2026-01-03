@@ -2,14 +2,13 @@ import { NextResponse } from "next/server";
 
 const GITHUB_API = "https://api.github.com";
 
-export async function GET(req, { params }) {
-  const username = params.username;
+export const runtime = "nodejs";
+
+export async function GET(req, context) {
+  const { username } = await context.params;
 
   if (!username) {
-    return NextResponse.json(
-      { error: "Username required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Username required" }, { status: 400 });
   }
 
   if (!process.env.GITHUB_TOKEN) {
@@ -25,25 +24,19 @@ export async function GET(req, { params }) {
   };
 
   try {
-    const userRes = await fetch(
-      `${GITHUB_API}/users/${username}`,
-      { headers }
-    );
+    const [userRes, reposRes] = await Promise.all([
+      fetch(`${GITHUB_API}/users/${username}`, { headers }),
+      fetch(
+        `${GITHUB_API}/users/${username}/repos?per_page=100&sort=stars`,
+        { headers }
+      ),
+    ]);
 
     if (!userRes.ok) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const user = await userRes.json();
-
-    const reposRes = await fetch(
-      `${GITHUB_API}/users/${username}/repos?per_page=100&sort=stars`,
-      { headers }
-    );
-
     const repos = await reposRes.json();
 
     return NextResponse.json({ user, repos });

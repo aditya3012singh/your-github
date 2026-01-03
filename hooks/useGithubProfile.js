@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 export function useGithubProfile() {
@@ -9,6 +8,8 @@ export function useGithubProfile() {
   const [error, setError] = useState(null);
 
   const loadProfile = async (username) => {
+    if (!username) return;
+
     setLoading(true);
     setError(null);
 
@@ -16,24 +17,21 @@ export function useGithubProfile() {
       const res = await fetch(`/api/github/${username}`);
 
       if (!res.ok) {
-        throw new Error("User not found");
+        const err = await res.json();
+        throw new Error(err.error || "Failed to fetch profile");
       }
 
       const data = await res.json();
       setProfile(data.user);
-      setRepos(data.repos);
+      setRepos(Array.isArray(data.repos) ? data.repos : []);
     } catch (err) {
       setError(err.message);
+      setProfile(null);
+      setRepos([]);
     } finally {
       setLoading(false);
     }
   };
 
-  return {
-    profile,
-    repos,
-    loading,
-    error,
-    loadProfile,
-  };
+  return { profile, repos, loading, error, loadProfile };
 }

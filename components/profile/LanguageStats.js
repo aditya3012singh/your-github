@@ -1,6 +1,66 @@
-import React from "react";
+"use client";
 
-export default function LanguageStats({ data }) {
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
+export default function LanguageStats({ data, loading }) {
+  // ✅ Get theme from Redux
+  const theme = useSelector((state) => state.theme.theme);
+  const isDark = theme === "dark";
+
+  // ✅ Prevent SSR hydration mismatch
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
+  /* 🔹 Loading Skeleton */
+  if (loading) {
+    return (
+      <div
+        className={`rounded-xl p-6 border animate-pulse transition-colors duration-500 ${
+          isDark ? "bg-black border-slate-700" : "bg-white border-gray-300"
+        }`}
+      >
+        <div
+          className={`h-5 w-44 rounded mb-4 ${
+            isDark ? "bg-slate-700" : "bg-gray-300"
+          }`}
+        />
+
+        {/* Progress bar skeleton */}
+        <div
+          className={`h-4 rounded-full mb-4 ${
+            isDark ? "bg-slate-700" : "bg-gray-300"
+          }`}
+        />
+
+        {/* List skeleton */}
+        <div className="grid grid-cols-2 gap-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  isDark ? "bg-slate-700" : "bg-gray-300"
+                }`}
+              />
+              <div
+                className={`h-4 w-20 rounded ${
+                  isDark ? "bg-slate-700" : "bg-gray-300"
+                }`}
+              />
+              <div
+                className={`ml-auto h-4 w-10 rounded ${
+                  isDark ? "bg-slate-700" : "bg-gray-300"
+                }`}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  /* 🔹 Empty safety */
   if (!data || Object.keys(data).length === 0) return null;
 
   const total = Object.values(data).reduce((a, b) => a + b, 0);
@@ -28,9 +88,20 @@ export default function LanguageStats({ data }) {
   };
 
   return (
-    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-      <h3 className="text-lg font-semibold mb-4">Most Used Languages</h3>
+    <div
+      className={`rounded-xl p-6 border transition-colors duration-500 ${
+        isDark ? "bg-black border-slate-700" : "bg-white border-gray-300"
+      }`}
+    >
+      <h3
+        className={`text-lg font-semibold mb-4 ${
+          isDark ? "text-white" : "text-gray-900"
+        }`}
+      >
+        Most Used Languages
+      </h3>
 
+      {/* Progress bar */}
       <div className="h-4 rounded-full overflow-hidden flex mb-4">
         {Object.entries(data).map(([lang, bytes]) => (
           <div
@@ -43,15 +114,21 @@ export default function LanguageStats({ data }) {
         ))}
       </div>
 
+      {/* Legend */}
       <div className="grid grid-cols-2 gap-2">
         {Object.entries(data).map(([lang, bytes]) => (
-          <div key={lang} className="flex items-center gap-2 text-sm">
+          <div
+            key={lang}
+            className={`flex items-center gap-2 text-sm ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
+          >
             <div
               className="w-3 h-3 rounded-full"
               style={{ backgroundColor: getColor(lang) }}
             />
             <span>{lang}</span>
-            <span className="ml-auto text-slate-400">
+            <span className={`ml-auto ${isDark ? "text-slate-400" : "text-gray-500"}`}>
               {((bytes / total) * 100).toFixed(1)}%
             </span>
           </div>
